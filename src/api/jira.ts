@@ -24,7 +24,8 @@ const fetchVersionIdByName = async (releasedDate: string) => {
   );
 
   const versions = releaseList.data.filter(
-    (v: any) => v.releaseDate === releasedDate && v.name.includes("Web")
+    (v: any) =>
+      v.releaseDate === releasedDate && v.name.includes("Web") && !v.released
   );
 
   return versions.map((v: any) => ({ id: v.id, name: v.name }));
@@ -88,7 +89,7 @@ export const fetchRelease = async (version: string) => {
         }
       })
       .map((issue: any) => {
-        return `<https://ooruda.atlassian.net/browse/${issue.key}|[${issue.key}]> : ${issue.fields?.summary}`;
+        return `<${JIRA_BASE_URL}/browse/${issue.key}|[${issue.key}]> : ${issue.fields?.summary}`;
       });
 
     return { [releaseKey]: releaseIssuesLink };
