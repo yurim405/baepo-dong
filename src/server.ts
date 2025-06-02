@@ -1,6 +1,6 @@
 import express from "express";
 import { handleDeploy } from "./handlers/deploy";
-
+import { fetchRelease, fetchVersionIdByName } from "./api/jira";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +10,12 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/test", (req: any, res: any) => {
   console.log("Hello World");
   res.send("Hello World");
+});
+
+app.get("/test2", async (req: any, res: any) => {
+  const versions = await fetchRelease("2025-06-04");
+  const releaseInfo = await fetchVersionIdByName("2025-06-04");
+  res.send({ versions, releaseInfo });
 });
 
 app.post("/deploy-start", async (req: any, res: any) => {
