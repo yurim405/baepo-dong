@@ -62,8 +62,6 @@ export const fetchRelease = async (version: string) => {
 
   const addedParentIds = new Set<string>();
 
-  // console.log(issues);
-
   /**
    * issues : [{'25.11.01 PC': [{issue1}, {issue2}, {issue3}]},
    * {'25.11.01 TV': [{issue4}, {issue5}, {issue6}]},
@@ -86,6 +84,8 @@ export const fetchRelease = async (version: string) => {
           addedParentIds.add(parentIssueId);
 
           return true;
+        } else {
+          return true;
         }
       })
       .map((issue: any) => {
@@ -94,8 +94,6 @@ export const fetchRelease = async (version: string) => {
 
     return { [releaseKey]: releaseIssuesLink };
   });
-
-  console.log(versions);
 
   return {
     versions,
