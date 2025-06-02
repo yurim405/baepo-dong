@@ -3,7 +3,7 @@ import { postToSlack } from "../api/slack";
 
 export const handleDeploy = async (releasedDate: string, channel: string) => {
   const releaseInfo: {
-    versions: string[];
+    versions: { id: string; name: string }[];
     links: { [x: string]: string[] }[];
   } | null = await fetchRelease(releasedDate);
 
