@@ -106,7 +106,7 @@ export const postToSlack = async (
       const [key, items] = Object.entries(entry)[0];
       const category = Object.keys(categoryMap).find((k) => key.includes(k));
       const title = `🔖 ${categoryMap[category as keyof typeof categoryMap]} (${
-        releaseInfo.versions.find((v) => v.name === key)?.name
+        releaseInfo.versions.find((v) => v.name === key)?.id
       })`;
 
       return `*${title}*${
