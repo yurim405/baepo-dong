@@ -36,15 +36,14 @@ export const postToSlack = async (
   const generateReleaseBranchName = (
     versions: { id: string; name: string }[]
   ) => {
-    console.log(versions);
-    const sortedIssueNumbers = versions.sort(
-      (a: { id: string; name: string }, b: { id: string; name: string }) => {
-        if (a.id === null && b.id === null) return 0;
-        if (a.id === null) return 1;
-        if (b.id === null) return -1;
-        return parseInt(a.id) - parseInt(b.id);
-      }
-    );
+    const sortedIssueNumbers = versions
+      .map((v) => v.id)
+      .sort((a, b) => {
+        if (a === null && b === null) return 0;
+        if (a === null) return 1;
+        if (b === null) return -1;
+        return parseInt(a) - parseInt(b);
+      });
 
     return `release/${sortedIssueNumbers.join("-")}`;
   };
@@ -91,24 +90,16 @@ export const postToSlack = async (
     }
   );
 
-  const categoryMap = {
-    "PC Web": "PC",
-    "TV Web": "TV",
-    "Bill Web": "Bill",
-    "Account Web": "Account",
-  };
-
   /**
    * 플랫폼 별 배포 항목 포맷팅
    */
   const formattedOutput = releaseInfo?.links
     .map((entry: { [s: string]: string[] } | ArrayLike<string>) => {
       const [key, items] = Object.entries(entry)[0];
-      // const category = Object.keys(categoryMap).find((k) => key.includes(k));
 
       const versionId = releaseInfo.versions.find((v) => v.name === key)?.id;
 
-      const title = `🔖 ${key} (<${JIRA_BASE_URL}/projects/${JIRA_PROJECT_ID}/versions/${versionId}|${versionId}>)`;
+      const title = `🔖 ${key} (release id : <${JIRA_BASE_URL}/projects/${JIRA_PROJECT_ID}/versions/${versionId}|${versionId}>)`;
 
       return `*${title}*${
         items.length
