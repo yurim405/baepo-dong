@@ -98,7 +98,7 @@ export const fetchRelease = async (version: string) => {
   console.log(versions);
 
   return {
-    versions: versions.map((v: { id: string; name: string }) => v.id),
+    versions,
     links,
   };
 };

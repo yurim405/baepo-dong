@@ -104,13 +104,11 @@ export const postToSlack = async (
   const formattedOutput = releaseInfo?.links
     .map((entry: { [s: string]: string[] } | ArrayLike<string>) => {
       const [key, items] = Object.entries(entry)[0];
-      const category = Object.keys(categoryMap).find((k) => key.includes(k));
+      // const category = Object.keys(categoryMap).find((k) => key.includes(k));
 
       const versionId = releaseInfo.versions.find((v) => v.name === key)?.id;
 
-      const title = `🔖 ${
-        categoryMap[category as keyof typeof categoryMap]
-      }  (<${JIRA_BASE_URL}/projects/${JIRA_PROJECT_ID}/versions/${versionId}|${versionId}>)`;
+      const title = `🔖 ${key} (<${JIRA_BASE_URL}/projects/${JIRA_PROJECT_ID}/versions/${versionId}|${versionId}>)`;
 
       return `*${title}*${
         items.length
