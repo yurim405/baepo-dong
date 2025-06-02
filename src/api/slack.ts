@@ -1,5 +1,5 @@
 import axios from "axios";
-import { JIRA_PROJECT_ID, SLACK_BOT_TOKEN } from "../config";
+import { JIRA_PROJECT_ID, SLACK_BOT_TOKEN, JIRA_BASE_URL } from "../config";
 
 export const postToSlack = async (
   channel: string,
@@ -105,9 +105,12 @@ export const postToSlack = async (
     .map((entry: { [s: string]: string[] } | ArrayLike<string>) => {
       const [key, items] = Object.entries(entry)[0];
       const category = Object.keys(categoryMap).find((k) => key.includes(k));
-      const title = `🔖 ${categoryMap[category as keyof typeof categoryMap]} (${
-        releaseInfo.versions.find((v) => v.name === key)?.id
-      })`;
+
+      const versionId = releaseInfo.versions.find((v) => v.name === key)?.id;
+
+      const title = `🔖 ${
+        categoryMap[category as keyof typeof categoryMap]
+      }  (<${JIRA_BASE_URL}/projects/${JIRA_PROJECT_ID}/versions/${versionId}|${versionId}>)`;
 
       return `*${title}*${
         items.length
