@@ -78,7 +78,9 @@ export const fetchRelease = async (version: string) => {
 
         if (parentIssueId) {
           if (addedParentIds.has(parentIssueId)) {
-            return false;
+            // @TODO 중복 방지로 해놓았는데 임시로 false처리
+            return true;
+            // return false;
           }
 
           addedParentIds.add(parentIssueId);
